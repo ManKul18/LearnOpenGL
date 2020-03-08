@@ -142,6 +142,8 @@ int main(void)
 	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
 
+	glfwSwapInterval(20);
+
 	glfwSetKeyCallback(window, KeyHandlerCB);
 
 	/*init glew*/
@@ -179,6 +181,9 @@ int main(void)
 	int program = CreateShader(shaders.vertexShader, shaders.fragmentShader);
 	glUseProgram(program);
 
+
+	int location = glGetUniformLocation(program, "u_Color");
+
 	glGenBuffers(1, &bufferid);
 	glBindBuffer(GL_ARRAY_BUFFER, bufferid);
 	glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), points, GL_STATIC_DRAW);
@@ -190,6 +195,7 @@ int main(void)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
+	float redness = 0.05f, increment = 0.05;
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
@@ -199,8 +205,12 @@ int main(void)
 
 		/* Render here */
 		glClear(GL_COLOR_BUFFER_BIT);
-
-		
+		if (redness > 1.0)
+			increment = -0.05;
+		if (redness < 0.0)
+			increment = 0.05;
+		redness += increment;
+		glUniform4f(location, redness, 0.3, 0.4, 1.0);
 		GLCall( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL));
 		
 

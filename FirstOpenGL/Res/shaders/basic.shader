@@ -11,10 +11,11 @@ void main()
 #shader fragment
 #version 430
 
-out vec4 fragColor;
+layout(location=0) out vec4 fragColor;
+uniform vec4 u_Color;
 
 void main()
 {
-  fragColor = vec4(0.8, 0.1, 0.1, 1.0); 
+  fragColor = u_Color;
 }
 
