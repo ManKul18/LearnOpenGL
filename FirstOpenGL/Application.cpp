@@ -10,6 +10,7 @@
 #include "Renderer.h"
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
+#include "VertexArray.h"
 
 static struct Shader {
 	std::string vertexShader;
@@ -154,15 +155,17 @@ int main(void)
 
 		int location = glGetUniformLocation(program, "u_Color");
 
-		unsigned int vao;
-		GLCall(glGenVertexArrays(1, &vao));
-		GLCall(glBindVertexArray(vao));
+		VertexArray va;
+		VertexBufferLayout layout;
+		float f=0.0;
+		layout.Push(f, 2);
 
 		VertexBuffer vb1(points, sizeof(points));
+
+		va.AddBuffer(vb1, layout);
 		IndexBuffer ib1(indices, 6);
 
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(float), NULL);
-		glEnableVertexAttribArray(0);
+		va.Bind();
 
 		float redness = 0.05f, increment = 0.05;
 
