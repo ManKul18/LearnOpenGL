@@ -1,4 +1,7 @@
-#pragma once
+#ifndef __VERTEX_BUFFER__
+#define __VERTEX_BUFFER__
+
+#include "Utility.h"
 
 class VertexBuffer
 {
@@ -8,6 +11,8 @@ public:
 	VertexBuffer(const void* data, unsigned int size);
 	~VertexBuffer();
 
-	void Bind() const;
-	void Unbind() const;
+	void Bind(void) const;
+	void Unbind(void) const;
 };
+
+#endif // !__VERTEX_BUFFER__

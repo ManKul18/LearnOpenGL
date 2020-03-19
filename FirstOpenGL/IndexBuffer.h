@@ -1,6 +1,9 @@
-#pragma once
+#ifndef __INDEX_BUFFER_H__
+#define __INDEX_BUFFER_H__
 
 #include<GL/glew.h>
+
+#include "Utility.h"
 
 class IndexBuffer
 {
@@ -16,3 +19,5 @@ public:
 
 	unsigned int GetCount() const;
 };
+
+#endif // !__INDEX_BUFFER_H__

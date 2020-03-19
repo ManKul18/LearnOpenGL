@@ -1,13 +1,14 @@
-#pragma once
+#ifndef  __RENDERER_H__
+#define __RENDERER_H__
 
-#include <GL/glew.h>
+#include "IndexBuffer.h"
+#include "Shader.h"
+#include "VertexArray.h"
+#include "Utility.h"
 
-#define ASSERT(X) do { if(!(X) )__debugbreak();}while(0)
-#define GLCall(X) ClearGLError();\
-X;\
-ASSERT(PrintGLError(__FILE__, #X,__LINE__));
+class Renderer {
+public:
+	void Draw(const VertexArray& va, const IndexBuffer& ib, Shader& sh);
+};
 
-
-
-void ClearGLError();
-bool PrintGLError(const char* fileName, const char* functionName, const int lineNumber);
+#endif // ! __RENDERER_H__

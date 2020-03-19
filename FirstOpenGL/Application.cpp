@@ -68,20 +68,16 @@ int main(void)
 			2, 3, 0
 		};
 
+		Renderer rendrr;
 		Shader shaders("Res/shaders/basic.shader");
-		shaders.Bind();
 
 		VertexArray va;
 		VertexBufferLayout layout;
-		float f=0.0;
-		layout.Push(f, 2);
 
 		VertexBuffer vb1(points, sizeof(points));
-
+		layout.Push(0.0f, 2);
 		va.AddBuffer(vb1, layout);
 		IndexBuffer ib1(indices, 6);
-
-		va.Bind();
 
 		float redness = 0.05f, increment = 0.05f;
 
@@ -98,9 +94,8 @@ int main(void)
 			if (redness < 0.0f)
 				increment = 0.05f;
 			redness += increment;
+			rendrr.Draw(va, ib1, shaders); //if called earlier shader is not bound
 			shaders.SetUniform4f("u_Color", redness, 0.3f, 0.4f, 1.0f);
-			GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL));
-
 
 			/* Swap front and back buffers */
 			glfwSwapBuffers(window);

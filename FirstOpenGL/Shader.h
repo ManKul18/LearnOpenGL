@@ -1,10 +1,11 @@
-#pragma once
+#ifndef __SHADER_H__
+#define __SHADER_H__
 
 #include <string>
 #include <fstream>
 #include <sstream>
 
-#include "Renderer.h"
+#include "Utility.h"
 
 class Shader 
 {
@@ -18,7 +19,9 @@ public:
 	Shader(const std::string& filePath);
 	~Shader();
 
-	void Bind();
-	void Unbind();
+	void Bind(void);
+	void Unbind(void);
 	void SetUniform4f(const std::string uniformName, GLfloat f1, GLfloat f2, GLfloat f3, GLfloat f4);
 };
+
+#endif // !__SHADER_H__
