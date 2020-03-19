@@ -11,12 +11,11 @@ struct VertexBufferElement {
 	static unsigned int GetElementSize(unsigned int type) {
 		switch (type)
 		{
-			case GL_FLOAT: return sizeof(GLfloat); break;
-			case GL_UNSIGNED_INT: return sizeof(GLuint); break;
-			case GL_UNSIGNED_BYTE: return sizeof(GLbyte); break;
+			case GL_FLOAT: return sizeof(GLfloat); 
+			case GL_UNSIGNED_INT: return sizeof(GLuint); 
+			case GL_UNSIGNED_BYTE: return sizeof(GLbyte); 
 			default:
-				ASSERT(false);
-				break;
+				return 0;
 		}
 	}
 };

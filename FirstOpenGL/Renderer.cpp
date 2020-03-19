@@ -25,4 +25,5 @@ bool PrintGLError(const char* fileName, const char* functionName, const int line
 		std::cout << "Error : [ " << ErrorString << " ] File Name [ " << fileName << " ] Function [ " << functionName << " ] Line Number [ " << lineNumber << " ]" << std::endl;
 		return false;
 	}
+	return true;
 }

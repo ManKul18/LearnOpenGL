@@ -83,7 +83,7 @@ int main(void)
 
 		va.Bind();
 
-		float redness = 0.05f, increment = 0.05;
+		float redness = 0.05f, increment = 0.05f;
 
 		/* Loop until the user closes the window */
 		while (!glfwWindowShouldClose(window))
@@ -93,12 +93,12 @@ int main(void)
 
 			/* Render here */
 			glClear(GL_COLOR_BUFFER_BIT);
-			if (redness > 1.0)
-				increment = -0.05;
-			if (redness < 0.0)
-				increment = 0.05;
+			if (redness > 1.0f)
+				increment = -0.05f;
+			if (redness < 0.0f)
+				increment = 0.05f;
 			redness += increment;
-			shaders.SetUniform4f("u_Color", redness, 0.3, 0.4, 1.0);
+			shaders.SetUniform4f("u_Color", redness, 0.3f, 0.4f, 1.0f);
 			GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL));
 
 
