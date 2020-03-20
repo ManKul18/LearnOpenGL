@@ -1,7 +1,7 @@
 #include "Shader.h"
 
 
-unsigned int Shader::m_CompileShader(const std::string& source, int shaderType)
+unsigned int Shader::m_CompileShader(const string& source, int shaderType)
 {
 	unsigned int id;
 
@@ -23,7 +23,7 @@ unsigned int Shader::m_CompileShader(const std::string& source, int shaderType)
 	return id;
 }
 
-void Shader::m_CreateShader(const std::string& vshader, const std::string& fshader)
+void Shader::m_CreateShader(const string& vshader, const string& fshader)
 {
 	m_RendererID = glCreateProgram();
 	unsigned int vid = m_CompileShader(vshader, GL_VERTEX_SHADER);
@@ -48,20 +48,20 @@ void Shader::m_CreateShader(const std::string& vshader, const std::string& fshad
 	glDeleteShader(fid);
 }
 
-Shader::Shader(const std::string& filePath)
+Shader::Shader(const string& filePath)
 {
-	std::ifstream stream(filePath);
+	ifstream stream(filePath);
 
-	std::string line;
+	string line;
 	ShaderType type;
 
-	std::ostringstream shaderArray[2];
-	while (std::getline(stream, line)) {
-		if (line.find("#shader") != std::string::npos) {
-			if (line.find("vertex") != std::string::npos) {
+	ostringstream shaderArray[2];
+	while (getline(stream, line)) {
+		if (line.find("#shader") != string::npos) {
+			if (line.find("vertex") != string::npos) {
 				type = ShaderType::VERTEX;
 			}
-			else if (line.find("fragment") != std::string::npos) {
+			else if (line.find("fragment") != string::npos) {
 				type = ShaderType::FRAGMENT;
 			}
 		}
@@ -87,8 +87,16 @@ void Shader::Unbind()
 	GLCall(glUseProgram(0));
 }
 
-void Shader::SetUniform4f(const std::string uniformName, GLfloat f1, GLfloat f2, GLfloat f3, GLfloat f4)
+void Shader::SetUniform4f(const string uniformName, GLfloat f1, GLfloat f2, GLfloat f3, GLfloat f4)
 {
-	GLCall(int location = glGetUniformLocation(m_RendererID, uniformName.c_str()));
+	int location;
+	auto it = m_UniformCache.find(uniformName);
+	if (it != m_UniformCache.end()) {
+		location = it->second;
+	}
+	else {
+		GLCall(location = glGetUniformLocation(m_RendererID, uniformName.c_str()));
+		m_UniformCache.insert(pair<string, unsigned int>(uniformName, location));
+	}
 	GLCall(glUniform4f(location, f1, f2, f3, f4));
 }
