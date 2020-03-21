@@ -1,6 +1,5 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-
 #include <iostream>
 #include <string>
 #include <intrin.h>
@@ -10,7 +9,7 @@
 #include "VertexBuffer.h"
 #include "VertexArray.h"
 #include "Shader.h"
-
+#include "Texture.h"
 
 void KeyHandlerCB(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -41,9 +40,7 @@ int main(void)
 
 	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
-
-	glfwSwapInterval(10);
-
+	glfwSwapInterval(5);
 	glfwSetKeyCallback(window, KeyHandlerCB);
 
 	/*init glew*/
@@ -55,12 +52,13 @@ int main(void)
 	else {
 		fprintf(stderr, "Info: %s\n", glGetString(GL_VERSION));
 	}
-	{
+	{ //open scope so that objects get destroyed automatically
 		float points[] = {
-				-0.5f, -0.5f,
-				-0.5f,  0.5f,
-				 0.5f,  0.5f,
-				 0.5f, -0.5f
+			/* shape coordinates, texture coordinates*/
+				-0.5f, -0.5f, 0.0f, 0.0f,
+				-0.5f,  0.5f, 0.0f, 1.0f,
+				 0.5f,  0.5f, 1.0f, 1.0f,
+				 0.5f, -0.5f, 1.0f, 0.0f
 		};
 
 		unsigned int indices[] = {
@@ -73,33 +71,36 @@ int main(void)
 
 		VertexArray va;
 		VertexBufferLayout layout;
+		Texture texture("Res/texture/mk.png");
 
 		VertexBuffer vb1(points, sizeof(points));
 		layout.Push(0.0f, 2);
+		layout.Push(0.0f, 2);
 		va.AddBuffer(vb1, layout);
 		IndexBuffer ib1(indices, 6);
+		texture.Bind();
 
-		float redness = 0.05f, increment = 0.05f;
+		float redness = 0.05f, increment = 0.10f;
 
 		/* Loop until the user closes the window */
 		while (!glfwWindowShouldClose(window))
 		{
-			/*set color*/
+			/*set color and render*/
 			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-
-			/* Render here */
 			glClear(GL_COLOR_BUFFER_BIT);
+
 			if (redness > 1.0f)
-				increment = -0.05f;
+				increment = -0.10f;
 			if (redness < 0.0f)
-				increment = 0.05f;
+				increment = 0.10f;
+
 			redness += increment;
 			rendrr.Draw(va, ib1, shaders); //if called earlier shader is not bound
 			shaders.SetUniform4f("u_Color", redness, 0.3f, 0.4f, 1.0f);
+			shaders.SetUniform1i("u_Texture", 0);
 
 			/* Swap front and back buffers */
 			glfwSwapBuffers(window);
-
 			/* Poll for and process events */
 			glfwPollEvents();
 		}

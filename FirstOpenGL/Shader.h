@@ -25,6 +25,7 @@ public:
 	void Bind(void);
 	void Unbind(void);
 	void SetUniform4f(const string uniformName, GLfloat f1, GLfloat f2, GLfloat f3, GLfloat f4);
+	void SetUniform1i(const string uniformName, GLint i1);
 };
 
 #endif // !__SHADER_H__

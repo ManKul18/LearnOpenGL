@@ -100,3 +100,17 @@ void Shader::SetUniform4f(const string uniformName, GLfloat f1, GLfloat f2, GLfl
 	}
 	GLCall(glUniform4f(location, f1, f2, f3, f4));
 }
+
+void Shader::SetUniform1i(const string uniformName, GLint i1)
+{
+	int location;
+	auto it = m_UniformCache.find(uniformName);
+	if (it != m_UniformCache.end()) {
+		location = it->second;
+	}
+	else {
+		GLCall(location = glGetUniformLocation(m_RendererID, uniformName.c_str()));
+		m_UniformCache.insert(pair<string, unsigned int>(uniformName, location));
+	}
+	GLCall(glUniform1i(location, i1));
+}
