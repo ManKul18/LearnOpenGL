@@ -8,6 +8,7 @@ Texture::Texture(string fileName)
 {
 	stbi_set_flip_vertically_on_load(1);
 	m_TextureBuffer = stbi_load(fileName.c_str(), &m_Width, &m_Height, &m_BPP, 4);
+	ASSERT(m_TextureBuffer != NULL);
 	GLCall(glGenTextures(1, &m_RendererID));
 	GLCall(glBindTexture(GL_TEXTURE_2D, m_RendererID));
 	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));

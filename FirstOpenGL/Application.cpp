@@ -31,7 +31,7 @@ int main(void)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+	window = glfwCreateWindow(640, 480, "Learning OpenGL", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -73,6 +73,9 @@ int main(void)
 		VertexBufferLayout layout;
 		Texture texture("Res/texture/mk.png");
 
+		GLCall(glEnable(GL_BLEND));
+		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+
 		VertexBuffer vb1(points, sizeof(points));
 		layout.Push(0.0f, 2);
 		layout.Push(0.0f, 2);
@@ -96,7 +99,7 @@ int main(void)
 
 			redness += increment;
 			rendrr.Draw(va, ib1, shaders); //if called earlier shader is not bound
-			shaders.SetUniform4f("u_Color", redness, 0.3f, 0.4f, 1.0f);
+			shaders.SetUniform4f("u_Color", redness, 0.3f, 0.4f, 0.5f);
 			shaders.SetUniform1i("u_Texture", 0);
 
 			/* Swap front and back buffers */
