@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 #include <intrin.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "Renderer.h"
 #include "IndexBuffer.h"
@@ -69,6 +71,8 @@ int main(void)
 		Renderer rendrr;
 		Shader shaders("Res/shaders/basic.shader");
 
+		glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+
 		VertexArray va;
 		VertexBufferLayout layout;
 		Texture texture("Res/texture/mk.png");
@@ -80,6 +84,7 @@ int main(void)
 		layout.Push(0.0f, 2);
 		layout.Push(0.0f, 2);
 		va.AddBuffer(vb1, layout);
+		shaders.Bind();
 		IndexBuffer ib1(indices, 6);
 		texture.Bind();
 
@@ -98,9 +103,12 @@ int main(void)
 				increment = 0.10f;
 
 			redness += increment;
-			rendrr.Draw(va, ib1, shaders); //if called earlier shader is not bound
+
+			shaders.SetUniformMat4f("u_MVP", proj);
 			shaders.SetUniform4f("u_Color", redness, 0.3f, 0.4f, 0.5f);
 			shaders.SetUniform1i("u_Texture", 0);
+
+			rendrr.Draw(va, ib1, shaders); //if called earlier shader is not bound
 
 			/* Swap front and back buffers */
 			glfwSwapBuffers(window);
